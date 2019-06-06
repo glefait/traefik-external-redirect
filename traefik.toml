@@ -1,0 +1,34 @@
+logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+
+[acme]
+email = "guillem.lefait+traefik@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+acmeLogging = true
+[acme.tlsChallenge]
+
+[[acme.domains]]
+  main = "maison.datamq.com"
+
+[file]
+
+[backends]
+  [backends.fake]
+    [backends.fake.servers.s1]
+      url="http://fa.ke"
+
+[frontends]
+[frontends.r1]
+  backend = "fake"
+  [frontends.r1.redirect]
+    regex = "^https?://maison.datamq.com/"
+    replacement = "https://www.google.fr/"
+    permanent = false
